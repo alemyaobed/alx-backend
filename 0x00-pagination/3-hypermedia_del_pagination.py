@@ -65,11 +65,11 @@ class Server:
         '''
         assert isinstance(page_size, int)
         assert index < len((self.indexed_dataset()))
-        
+
         next_index = index + page_size
-        start_index = index - page_size if (index - page_size) > 0 else 0 
+        start_index = index - page_size if (index - page_size) > 0 else 0
         data = {
-            i: self.indexed_dataset().get(i) for i in range(start_index, index )
+            i: self.indexed_dataset().get(i) for i in range(start_index, index)
         }
         return {
             "index": index,
