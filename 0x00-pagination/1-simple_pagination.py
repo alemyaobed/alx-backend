@@ -62,13 +62,28 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         '''Return a list of row if the input arguments are in range'''
+
         # Assertions
-        assert type(page) is int and type(page_size) is int
+        assert isinstance(page, int) and isinstance(page_size, int)
         assert page > 0 and page_size > 0
 
         dataset = self.dataset()
-        data_range = index_range(page, page_size)
+        start_index, end_index = index_range(page, page_size)
 
-        if data_range[-1] <= len(dataset):
-            return self.__dataset[data_range[0]:data_range[-1]]
-        return []
+        # Return the sliced dataset or an empty list if out of range
+        if start_index >= len(dataset):
+            return []
+        return dataset[start_index:end_index]
+
+        # #  Same but top is cleaner
+
+        # Assertions
+        # assert type(page) is int and type(page_size) is int
+        # assert page > 0 and page_size > 0
+
+        # dataset = self.dataset()
+        # data_range = index_range(page, page_size)
+
+        # if data_range[-1] <= len(dataset):
+        #     return self.__dataset[data_range[0]:data_range[-1]]
+        # return []
