@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 '''
-Create a class LRUCache that inherits from BaseCaching and is a caching system:
+Create a class LRUCache that inherits from BaseCaching and is a
+caching system:
 
 You must use self.cache_data - dictionary from the parent class BaseCaching
-You can overload def __init__(self): but don’t forget to call the parent init: super().__init__()
+You can overload def __init__(self): but don’t forget to call the parent init:
+super().__init__()
 def put(self, key, item):
 Must assign to the dictionary self.cache_data the item value for the key key.
 If key or item is None, this method should not do anything.
@@ -18,47 +20,37 @@ from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    ''''''
+    """
+    LRUCache class that inherits from BaseCaching and implements LRU caching
+    """
+
     def __init__(self):
-        ''' Initialize the LRUCache instance '''
+        """Initialize the LRUCache instance"""
         super().__init__()
-        self.hits = {}
-    
+        self.lru_order = []
+
     def put(self, key, item):
-        '''Adding items to the dictionary using the LRU algorithm'''
-        if key and item:
+        """Add an item in the cache using the LRU algorithm"""
+        if key is not None and item is not None:
             if key in self.cache_data:
-                self.cache_data[key] = item
-            else:
-                if len(self.cache_data) == BaseCaching.MAX_ITEMS:
-                    # Getting all the number of hits for each key to find the least
-                    all_hits = [value for _, value in self.hits.items()]
-                    # Getting the least hit key
-                    least_hit_key = self.get_hit_key(min(all_hits))
-                
-                    print("DISCARD: {}".format(least_hit_key))
-                    # Deleteing the item using the key
-                    del self.cache_data[least_hit_key]
-                    del self.hits[least_hit_key]
-                    
-                self.cache_data[key] = item
-                self.hits[key] = 0
-    
-    def get_hit_key(self, item):
-        """ Get the key associated with an item with least hits"""
-        for key, value in self.hits.items():
-            if value == item:
-                return key
-        return None
-        
-    
+                # If key is already in cache, remove it to update its position
+                self.lru_order.remove(key)
+            elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                # If cache is full, discard the least recently used item
+                lru_key = self.lru_order.pop(0)
+                print("DISCARD: {}".format(lru_key))
+                del self.cache_data[lru_key]
+
+            # Add the new item to the cache and update LRU order
+            self.cache_data[key] = item
+            self.lru_order.append(key)
+
     def get(self, key):
-        '''Get an item by key'''
-        # Checking if the key is not None
-        if key:
-            result = self.cache_data.get(key)
-            if result:
-                # Incrementing the hit for that key
-                self.hits[key] += 1
-                return result
-        return None
+        """Get an item by key"""
+        if key is None or key not in self.cache_data:
+            return None
+
+        # Move the accessed item to the end of the LRU order
+        self.lru_order.remove(key)
+        self.lru_order.append(key)
+        return self.cache_data[key]
