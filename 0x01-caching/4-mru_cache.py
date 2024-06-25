@@ -25,12 +25,12 @@ class MRUCache(BaseCaching):
     """
 
     def __init__(self):
-        """Initialize the LRUCache instance"""
+        """Initialize the MRUCache instance"""
         super().__init__()
         self.mru_order = []
 
     def put(self, key, item):
-        """Add an item in the cache using the LRU algorithm"""
+        """Add an item in the cache using the MRU algorithm"""
         if key is not None and item is not None:
             if key in self.cache_data:
                 # If key is already in cache, remove it to update its position
@@ -41,7 +41,7 @@ class MRUCache(BaseCaching):
                 print("DISCARD: {}".format(mru_key))
                 del self.cache_data[mru_key]
 
-            # Add the new item to the cache and update LRU order
+            # Add the new item to the cache and update MRU order
             self.cache_data[key] = item
             self.mru_order.append(key)
 
@@ -50,7 +50,7 @@ class MRUCache(BaseCaching):
         if key is None or key not in self.cache_data:
             return None
 
-        # Move the accessed item to the end of the LRU order
+        # Move the accessed item to the end of the MRU order
         self.mru_order.remove(key)
         self.mru_order.append(key)
         return self.cache_data[key]
