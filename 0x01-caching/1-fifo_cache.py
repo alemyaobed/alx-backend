@@ -21,9 +21,10 @@ from base_caching import BaseCaching
 
 class FIFOCache(BaseCaching):
     '''
-    A caching system that inherits from the BaseCaching class
+    Defines a FIFO caching system
     '''
     def __init__(self):
+        '''Initialize the FIFOCache instance'''
         super().__init__()
 
     def put(self, key, item):
