@@ -29,8 +29,9 @@ class LIFOCache(BaseCaching):
         '''Adding items to the dictionary using the LIFO algorithm'''
         if key and item:
             if len(self.cache_data) == BaseCaching.MAX_ITEMS:
-                # Getting the key using iter and next
+                # Getting all keys by iterating and storing the keys
                 keys = [key for key, _ in self.cache_data.items()]
+                # Getting the key
                 key_last = keys[-1]
                 print("DISCARD: {}".format(key_last))
                 # Deleteing the item using the key
