@@ -1,6 +1,3 @@
-Sure, here is an expanded version with definitions and explanations included:
-
-```markdown
 # 0x02. i18n
 
 This project focuses on internationalization (i18n) in Flask applications. The goal is to enable your Flask app to support multiple languages and locales.
@@ -115,6 +112,3 @@ flask run
 - [Babel Documentation](http://babel.pocoo.org/en/latest/)
 
 Feel free to contribute to this project by submitting issues or pull requests.
-```
-
-This version includes definitions and explanations for key concepts related to i18n in Flask applications.
