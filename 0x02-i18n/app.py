@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 ''' A flask app to be used for i18n and l10n'''
 from flask import Flask, render_template, request, g
-from flask_babel import Babel, _
+from flask_babel import Babel, _, format_datetime
 import pytz
 from pytz.exceptions import UnknownTimeZoneError
 from datetime import datetime
+from typing import Optional, Dict
 
 
 class Config:
@@ -19,7 +20,7 @@ app.config.from_object(Config)
 babel = Babel(app=app)
 
 
-users = {
+users: Dict[int, Dict[str, Optional[str]]] = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
     2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
     3: {"name": "Spock", "locale": "kg", "timezone": "Vulcan"},
@@ -27,7 +28,7 @@ users = {
 }
 
 
-def get_user():
+def get_user() -> Optional[Dict[str, Optional[str]]]:
     ''' Gets a user from the mock user data above '''
     user_id = request.args.get('login_as')
     if user_id:
@@ -36,7 +37,7 @@ def get_user():
 
 
 @app.before_request
-def before_request():
+def before_request() -> None:
     ''' Executes this functionality before '''
     logged_in_user = get_user()
     if logged_in_user:
@@ -46,7 +47,7 @@ def before_request():
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> Optional[str]:
     ''' The locale selector function '''
     # Check URL parameters for locale
     request_locale = request.args.get('locale')
@@ -64,7 +65,7 @@ def get_locale():
 
 
 @babel.timezoneselector
-def get_timezone():
+def get_timezone() -> str:
     ''' The timezone selector function '''
     # Check URL parameters for timezone
     request_timezone = request.args.get('timezone')
@@ -90,14 +91,14 @@ def get_timezone():
 
 
 @app.route("/")
-def index():
+def index() -> str:
     ''' Renders the index template with babel featured '''
     locale = get_locale()
-    current_time = datetime.now(pytz.timezone(
-        get_timezone())).strftime('%b %d, %Y, %I:%M:%S %p')
+    current_time = datetime.now(pytz.timezone(get_timezone()))
+    formatted_time = format_datetime(current_time)
     return render_template(
         "index.html", locale=locale,
-        current_time=current_time)
+        current_time=formatted_time)
 
 
 if __name__ == "__main__":
