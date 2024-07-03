@@ -25,7 +25,8 @@ def get_locale():
 @app.route("/")
 def index():
     ''' Renders the index template with babel featured '''
-    return render_template("3-index.html")
+    locale = get_locale()
+    return render_template("3-index.html", locale=locale)
 
 
 if __name__ == "__main__":
