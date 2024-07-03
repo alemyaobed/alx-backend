@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 ''' A flask app to be used for i18n and l10n'''
 from flask import Flask, render_template, request
-from flask_babel import Babel
+from flask_babel import Babel, _
 
 
 class Config:
@@ -25,7 +25,7 @@ def get_locale():
 @app.route("/")
 def index():
     ''' Renders the index template with babel featured '''
-    return render_template("2-index.html")
+    return render_template("3-index.html")
 
 
 if __name__ == "__main__":
