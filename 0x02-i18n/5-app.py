@@ -31,6 +31,7 @@ def get_user():
         return users.get(int(user_id))
     return None
 
+
 @app.before_request
 def before_request():
     ''' Executes this functionality before '''
