@@ -38,14 +38,25 @@ def before_request():
     logged_in_user = get_user()
     if logged_in_user:
         g.user = logged_in_user
+    else:
+        g.user = None
 
 
 @babel.localeselector
 def get_locale():
     ''' The locale selector function '''
+    # Check URL parameters for locale
     request_locale = request.args.get('locale')
     if request_locale and request_locale in app.config['LANGUAGES']:
         return request_locale
+
+    # Check user settings for locale
+    if g.user:
+        user_locale = g.user.get('locale')
+        if user_locale and user_locale in app.config['LANGUAGES']:
+            return user_locale
+
+    # Fall back to request header
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
@@ -53,7 +64,7 @@ def get_locale():
 def index():
     ''' Renders the index template with babel featured '''
     locale = get_locale()
-    return render_template("5-index.html", locale=locale)
+    return render_template("6-index.html", locale=locale)
 
 
 if __name__ == "__main__":
