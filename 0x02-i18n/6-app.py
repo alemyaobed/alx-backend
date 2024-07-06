@@ -68,4 +68,5 @@ def index():
 
 
 if __name__ == "__main__":
+    '''Main function '''
     app.run(debug=True)
