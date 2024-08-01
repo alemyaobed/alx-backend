@@ -22,5 +22,5 @@ job.on('complete', () => {
 
 // When the job is failing, log to the console Notification job failed
 job.on('failed', () => {
-    console.log('Notification job failed');
-  });
+  console.log('Notification job failed');
+});
